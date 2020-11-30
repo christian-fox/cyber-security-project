@@ -1,0 +1,52 @@
+---
+title: "Notes for countries histogram"
+author: "Christian Fox"
+date: "28 November 2020"
+output:
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+I decided to use data for the students detected country. 
+```{r }
+# add "head(cse$detected_country)" here.
+
+cse = read.table('cyber-security-1_enrolments.csv', header=TRUE, sep=',')
+cse.df = data.frame(cse)
+head(cse.df)
+
+
+```
+I made a histogram for this:
+```{r}
+# add 1st histogram
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
