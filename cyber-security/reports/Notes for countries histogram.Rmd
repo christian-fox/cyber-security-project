@@ -2,51 +2,109 @@
 title: "Notes for countries histogram"
 author: "Christian Fox"
 date: "28 November 2020"
+# knit: (function(inputFile, encoding) { 
+#      # out_dir <- 'H:/cyber-security/reports/';                            # for uni
+#       out_dir <- '/Users/10foxc/cyber-security/cyber-security/reports';   # for mac
+#       rmarkdown::render(inputFile,
+#                         encoding=encoding, 
+#                         output_file=file.path(out_dir, 'Notes for countries histogram.html')) })
 output:
   html_document:
     df_print: paged
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 
 I decided to use data for the students detected country. 
 ```{r }
 # add "head(cse$detected_country)" here.
+#setwd("H:/cyber-security/data")                            # for uni laptop
+setwd("/Users/10foxc/cyber-security/cyber-security/data")  # for mac
+cse = read.table('cyber-security-1_enrolments.csv', header=TRUE, sep=',') # creates table from excel document
+cse.df = data.frame(cse) # turns table to data frame and stores in environment
+# could make column width smaller here.
 
-cse = read.table('cyber-security-1_enrolments.csv', header=TRUE, sep=',')
-cse.df = data.frame(cse)
-head(cse.df)
-
+head(cse.df) # showing first 6 rows
+library(knitr)
+#kable(cse.df[1:5,c(1,2,3,6,8,13], caption = "A knitr table.",table.attr = "style='width:30%;'")
+# can always take out unwanted/unused columns in R normally if keeping this table in for report.
 
 ```
-I made a histogram for this:
+
+## Notes on data:
+To be able to easily manipulate the detected_country column of this data I named the variable and set this coulmn as a data frame.
 ```{r}
+# first create data frame with countries and frequency:
+list_of_countries = cse$detected_country
+# now find the 'count'/frequency of each country
+count.df = as.data.frame(table(list_of_countries))
+```
+
+### CRISP-DM methodology update
+A further undetsranding of the data has been achieved by munging the data. Therefore, I was subconsciously alternating from data understanding to data preperation.
+
+The total number of students is `r sum(count.df$Freq)`.
+There are `r count.df[count.df$list_of_countries=="--",]$Freq` students who's country is unknown.
+This gives a percentage of students with no detected country of `r count.df[count.df$list_of_countries=="--",]$Freq*100/sum(count.df$Freq)`%.
+
+
+
+A histogram for countries was plotted:
+```{r, echo=FALSE}
 # add 1st histogram
+library(ggplot2)
+ ggplot(data=cse, aes(x=detected_country)) + 
+  geom_bar(colour="black", fill="white")
+```
 
+### CRISP-DM methodology update
+Producing a histogram was the first modelling step. After a first look at the graph, it is clear that a back-track in the steps in necessary, since the x labels are unreadable. 
+
+### Data understanding
+Studying the data frame of countries, it is seen that there are 183 unique countries with a large portion only having 1 or 2 students.
+
+### Back to data preperation
+This lead to sorting through the countries list and a decision was made to omit countries with under 100 participating students, as well as the undetected country row.
+
+```{r}
+# omitting the countries with < 100 students/frequency
+countries_over_100 = count.df[which(count.df$Freq >= 100 & count.df$list_of_countries != "--"),]$list_of_countries
 ```
 
 
+The following hosogram was produced:
 
-
-
-
-
-
-
-
-```{r cars}
-summary(cars)
+```{r, echo=FALSE}
+# add 1st histogram
+library(ggplot2)
+ggplot(subset(cse, cse$detected_country %in% countries_over_100), aes(x=detected_country)) +  
+   geom_bar(colour="black", fill="white")
 ```
 
-## Including Plots
+This plot is more readable, as well as more relevant as the undetected countries bar didnt provide much useful information.
 
-You can also embed plots, for example:
+## Running the source code with the data for different years
+There were 7 different cohorts with data for the students' detected country. To make the code more simple to change between the different cohorts, the munge file was edited to have an extra variable:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r eval=FALSE}
+cohort = 1    # this is the different years of data, ranging from 1-7.
+cse = data.frame(read.table(paste('cyber-security-',cohort,'_enrolments.csv', sep=""), header=TRUE, sep=','))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The code was then manually changed in ascending order until cohort 3 was ran. This cohort produced a histogram with only 3 countries with over 100 students. This caused a re-evaluation, and the CRISP-DM phase to back-track to the data understanding once again.
+
+It was clear that this model had a problem with producing the final histogram as there is no lower limit to the amount of students enrolling on the course each year.
+A solution was manifested. The arbitrary and non-conformative/non-comprehensive/non-flexible number of 100 was changed to a percentage, which doesnt fully solve the problem of gaining an empty histogram some years (although it does decrease the chances of it happening dramatically), of 1%. 
+There is definitely more sophisticated models to let the histogram be consistent eaxh year available, such as choosing the top 10 countries etc. however we will not be assessed on either coming up with the mathematical model or coding the better solution.
+
+Running each cohort with the 1% condition, consistent, readable histograms are created for every year.
+
+
+### Endless evaluation of the data extraction process could be done, hovever the pipeline will have to eventually be deployed, as the model will expose its flaws best in an environment most specific to where it will be used.
+
+
+
+
+
+
+
+

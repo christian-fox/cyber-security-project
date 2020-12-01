@@ -1,8 +1,7 @@
 # Preprocessing script.
 
-("H:/cyber-security/data/FutureLearn MOOC Dataset")       # load.project function should automatically load things in data file.
-                                                               # have to set new wd here maybe because of the intermediate file FutureLearn MOOC Dataset
-cse = data.frame(read.table('cyber-security-1_enrolments.csv', header=TRUE, sep=','))
+cohort = 1    # this is the different years of data, ranging from 1-7.
+cse = data.frame(read.table(paste('data/cyber-security-',cohort,'_enrolments.csv', sep=""), header=TRUE, sep=','))
 
 
 
