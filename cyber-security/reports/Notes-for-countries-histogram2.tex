@@ -1,0 +1,300 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdftitle={Notes for countries histogram},
+            pdfauthor={Christian Fox},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\title{Notes for countries histogram}
+\author{Christian Fox}
+\date{28 November 2020}
+
+\begin{document}
+\maketitle
+
+\subsection{Business Understanding}\label{business-understanding}
+
+Project objectives were come up with, rather than have the
+business/customer give requirements and objectives. Data about the
+students country of residence was chosen to extract. This data can be
+used on its own to determine how much foreign attention the course
+attracts, which allows the business to target their advertising as wells
+as taylor/specify the course to these countries cultures and current
+events in these societies which would enable students to take away the
+most from the course.
+
+Since there is no client in this case, this phase is almost obselete for
+this certain project. Having data mining being done within a business
+indedendently proves a downfall for the CRISP-DM methodology.
+
+\subsection{Data Understanding}\label{data-understanding}
+
+Data collection is usually done after the requirements and objectives
+are given, however in this case the data is already given. Becoming
+familiar with the data involved finding; \emph{total amount of students
+}total unenrolments \emph{total course completion }total undetected
+countries + which turns out to be a data quality problem.
+
+Some of this data manipluation can be seen here:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{sum}\NormalTok{(cse}\OperatorTok{$}\NormalTok{fully_participated_at }\OperatorTok{!=}\StringTok{ ""}\NormalTok{)   }\CommentTok{# amount of students that did NOT fully participate}
+\KeywordTok{sum}\NormalTok{(cse}\OperatorTok{$}\NormalTok{unenrolled_at }\OperatorTok{!=}\StringTok{ ""}\NormalTok{)           }\CommentTok{# amount of students that did NOT unenroll}
+\KeywordTok{message}\NormalTok{(}\StringTok{"the total number of students = "}\NormalTok{, }\KeywordTok{sum}\NormalTok{(count.df}\OperatorTok{$}\NormalTok{Freq))}
+\KeywordTok{message}\NormalTok{(}\StringTok{"1% of students = "}\NormalTok{, }\KeywordTok{sum}\NormalTok{(count.df}\OperatorTok{$}\NormalTok{Freq)}\OperatorTok{/}\DecValTok{100}\NormalTok{)}
+\KeywordTok{message}\NormalTok{(}\StringTok{"number of students with no detected country = "}\NormalTok{, count.df[count.df}\OperatorTok{$}\NormalTok{list_of_countries}\OperatorTok{==}\StringTok{"--"}\NormalTok{,]}\OperatorTok{$}\NormalTok{Freq)}
+\KeywordTok{message}\NormalTok{(}\StringTok{"% of students with no detected country = "}\NormalTok{, count.df[count.df}\OperatorTok{$}\NormalTok{list_of_countries}\OperatorTok{==}\StringTok{"--"}\NormalTok{,]}\OperatorTok{$}\NormalTok{Freq}\OperatorTok{*}\DecValTok{100} \OperatorTok{/}\KeywordTok{sum}\NormalTok{(count.df}\OperatorTok{$}\NormalTok{Freq))}
+\end{Highlighting}
+\end{Shaded}
+
+Data understanding can also involve detecting interseting data subsets
+to form hypothesis regarding hidden information, for example, identify
+the students whos country is unknown, look at their total watch-time of
+the lectures and compare theirs to the mean average of students from
+Great Britian, which we can assume most of these students will be
+attending lectures in person, rather than remotely. This enables us to
+make an estimation on whether the student is studying remotely, and
+hence residing in a foreign country.
+
+I decided to use data for the students detected country.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# could make column width smaller here.}
+\KeywordTok{head}\NormalTok{(cse) }\CommentTok{# showing first 6 rows}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                             learner_id             enrolled_at
+## 1 160d6600-ea0e-4568-bfa9-5d7cd5b8e61b 2016-08-10 14:28:49 UTC
+## 2 4dc22fed-63d4-4bf6-b162-bdf482e1ec38 2016-05-24 17:34:34 UTC
+## 3 ecdd37db-0c75-496e-bff2-230553d0e38c 2016-05-19 00:52:38 UTC
+## 4 988964c9-7410-40cc-addf-441f93e7a8b8 2016-05-19 21:40:01 UTC
+## 5 f1493366-17a1-41b8-9de3-fbaad9d811d4 2016-09-19 15:35:35 UTC
+## 6 25cc3b46-a955-4e2a-a71f-6b2025cc2787 2016-08-30 04:16:43 UTC
+##             unenrolled_at    role   fully_participated_at
+## 1                         learner                        
+## 2 2018-10-30 20:20:51 UTC learner                        
+## 3                         learner 2016-09-22 16:56:03 UTC
+## 4                         learner                        
+## 5                         learner                        
+## 6                         learner 2016-10-25 12:44:14 UTC
+##   purchased_statement_at  gender country age_range highest_education_level
+## 1                        Unknown Unknown   Unknown                 Unknown
+## 2                           male      PE     46-55       university_degree
+## 3                        Unknown Unknown   Unknown                 Unknown
+## 4                        Unknown Unknown   Unknown                 Unknown
+## 5                        Unknown Unknown   Unknown                 Unknown
+## 6                        Unknown Unknown   Unknown                 Unknown
+##   employment_status        employment_area detected_country
+## 1           Unknown                Unknown               GB
+## 2 working_part_time teaching_and_education               PE
+## 3           Unknown                Unknown               NG
+## 4           Unknown                Unknown               UG
+## 5           Unknown                Unknown               IM
+## 6           Unknown                Unknown               NO
+\end{verbatim}
+
+\subsection{Notes on data:}\label{notes-on-data}
+
+To be able to easily manipulate the detected\_country column of this
+data I named the variable and set this coulmn as a data frame.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# first create data frame with countries and frequency:}
+\NormalTok{list_of_countries =}\StringTok{ }\NormalTok{cse}\OperatorTok{$}\NormalTok{detected_country}
+\CommentTok{# now find the 'count'/frequency of each country}
+\NormalTok{count.df =}\StringTok{ }\KeywordTok{as.data.frame}\NormalTok{(}\KeywordTok{table}\NormalTok{(list_of_countries))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{CRISP-DM methodology
+update}\label{crisp-dm-methodology-update}
+
+A further undetsranding of the data has been achieved by munging the
+data. Therefore, I was subconsciously alternating from data
+understanding to data preperation.
+
+The total number of students is 14383. There are 428 students who's
+country is unknown. This gives a percentage of students with no detected
+country of 2.9757352\%.
+
+A histogram for countries was plotted:
+\includegraphics{Notes-for-countries-histogram2_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\subsubsection{CRISP-DM methodology
+update}\label{crisp-dm-methodology-update-1}
+
+Producing a histogram was the first modelling step. After a first look
+at the graph, it is clear that a back-track in the steps in necessary,
+since the x labels are unreadable.
+
+\subsubsection{Data understanding}\label{data-understanding-1}
+
+Studying the data frame of countries, it is seen that there are 183
+unique countries with a large portion only having 1 or 2 students.
+
+\subsubsection{Back to data preperation}\label{back-to-data-preperation}
+
+This lead to sorting through the countries list and a decision was made
+to omit countries with under 100 participating students, as well as the
+undetected country row.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# omitting the countries with < 100 students/frequency}
+\NormalTok{countries_over_}\DecValTok{100}\NormalTok{ =}\StringTok{ }\NormalTok{count.df[}\KeywordTok{which}\NormalTok{(count.df}\OperatorTok{$}\NormalTok{Freq }\OperatorTok{>=}\StringTok{ }\DecValTok{100} \OperatorTok{&}\StringTok{ }\NormalTok{count.df}\OperatorTok{$}\NormalTok{list_of_countries }\OperatorTok{!=}\StringTok{ "--"}\NormalTok{),]}\OperatorTok{$}\NormalTok{list_of_countries}
+\end{Highlighting}
+\end{Shaded}
+
+The following hosogram was produced:
+
+\includegraphics{Notes-for-countries-histogram2_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+This plot is more readable, as well as more relevant as the undetected
+countries bar didnt provide much useful information.
+
+\subsection{Running the source code with the data for different
+years}\label{running-the-source-code-with-the-data-for-different-years}
+
+There were 7 different cohorts with data for the students' detected
+country. To make the code more simple to change between the different
+cohorts, the munge file was edited to have an extra variable:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{cohort =}\StringTok{ }\DecValTok{1}    \CommentTok{# this is the different years of data, ranging from 1-7.}
+\NormalTok{cse =}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\KeywordTok{read.table}\NormalTok{(}\KeywordTok{paste}\NormalTok{(}\StringTok{'cyber-security-'}\NormalTok{,cohort,}\StringTok{'_enrolments.csv'}\NormalTok{, }\DataTypeTok{sep=}\StringTok{""}\NormalTok{), }\DataTypeTok{header=}\OtherTok{TRUE}\NormalTok{, }\DataTypeTok{sep=}\StringTok{','}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+The code was then manually changed in ascending order until cohort 3 was
+ran. This cohort produced a histogram with only 3 countries with over
+100 students. This caused a re-evaluation, and the CRISP-DM phase to
+back-track to the data understanding once again.
+
+It was clear that this model had a problem with producing the final
+histogram as there is no lower limit to the amount of students enrolling
+on the course each year. A solution was manifested. The arbitrary and
+non-conformative/non-comprehensive/non-flexible number of 100 was
+changed to a percentage, which doesnt fully solve the problem of gaining
+an empty histogram some years (although it does decrease the chances of
+it happening dramatically), of 1\%. There is definitely more
+sophisticated models to let the histogram be consistent eaxh year
+available, such as choosing the top 10 countries etc. however we will
+not be assessed on either coming up with the mathematical model or
+coding the better solution.
+
+Running each cohort with the 1\% condition, consistent, readable
+histograms are created for every year.
+
+\subsubsection{Endless evaluation of the data extraction process could
+be done, hovever the pipeline will have to eventually be deployed, as
+the model will expose its flaws best in an environment most specific to
+where it will be
+used.}\label{endless-evaluation-of-the-data-extraction-process-could-be-done-hovever-the-pipeline-will-have-to-eventually-be-deployed-as-the-model-will-expose-its-flaws-best-in-an-environment-most-specific-to-where-it-will-be-used.}
+
+\end{document}

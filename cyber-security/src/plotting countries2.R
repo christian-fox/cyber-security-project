@@ -26,8 +26,8 @@ g # displaying histogram in RStudio
 
 message("the total number of students = ", sum(count.df$Freq))
 message("1% of students = ", sum(count.df$Freq)/100)
-count.df[count.df$list_of_countries=="--",]$Freq # gives number of students with unknown country
-count.df[count.df$list_of_countries=="--",]$Freq*100 /sum(count.df$Freq) # % of students with no detected country
+message("number of students with no detected country = ", count.df[count.df$list_of_countries=="--",]$Freq)
+message("% of students with no detected country = ", count.df[count.df$list_of_countries=="--",]$Freq*100 /sum(count.df$Freq))
 
 
 ########################################

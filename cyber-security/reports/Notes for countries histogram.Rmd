@@ -12,7 +12,10 @@ output:
   html_document:
     df_print: paged
 ---
-
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = normalizePath('..'))
+```
 
 I decided to use data for the students detected country. 
 ```{r }

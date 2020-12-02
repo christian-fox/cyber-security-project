@@ -1,0 +1,142 @@
+---
+title: "Executive Report"
+author: "Christian Fox"
+date: "28 November 2020"
+abstract: "A step by step walkthrough of the CRISP-DM process for creating a full data analytics pipeline, meanwhile reflecting on the pros and cons of this methodology."
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = normalizePath('..'))
+```
+
+```{r loading project, include=FALSE}
+# add "head(cse$detected_country)" here.
+library(ProjectTemplate)
+load.project(load_libraries = TRUE)
+# could make column width smaller here.
+```
+### Assumptions
++ It is important to note that it is assumed there are no duplicates of students in the data.
+
+
+### Business Understanding 
+Project objectives were come up with, rather than have the business/customer give requirements and objectives. Data about the students country of residence was chosen to extract. This data can be used on its own to determine how much foreign attention the course attracts, which allows the business to target their advertising as wells as taylor/specify the course to these countries cultures and current events in these societies which would enable students to take away the most from the course.
+
+Since there is no client in this case, this phase is almost obselete for this certain project. Having data mining being done within a business indedendently proves a downfall for the CRISP-DM methodology.
+
+### Data Understanding 
+Data collection is usually done after the requirements and objectives are given, however in this case the data is already given.
+
+The raw data file contains lots of unwanted variables
+```{r table, include=FALSE}
+knitr::kable(head(cse[1:6,c(1,2,3,4,5,7,10,11,13)])) # omitted some columns to fit to text width.
+```
+as seen in the column headers. Even some have been left out here. 
+
+Becoming familiar with the data involved finding;
+
++ total amount of students
+
++ total unenrolments
+
++ total course completion
+
++ total undetected countries
+    - which turns out to be a data quality problem.
+
+Some of this data manipluation can be seen here:
+```{r data manipulation, eval = FALSE}
+sum(cse$fully_participated_at != "")   # amount of students that did NOT fully participate
+sum(cse$unenrolled_at != "")           # amount of students that did NOT unenroll
+message("the total number of students = ", sum(count.df$Freq))
+message("1% of students = ", sum(count.df$Freq)/100)
+message("number of students with no detected country = ", count.df[count.df$list_of_countries=="--",]$Freq)
+message("% of students with no detected country = ", count.df[count.df$list_of_countries=="--",]$Freq*100 /sum(count.df$Freq))
+```
+  
+Data understanding can also involve detecting interseting data subsets to form hypothesis regarding hidden information, for example, identify the students whos country is unknown, look at their total watch-time of the lectures and compare theirs to the mean average of students from Great Britian, which we can assume most of these students will be attending lectures in person, rather than remotely. This enables us to make an estimation on whether the student is studying remotely, and hence residing in a foreign country.
+
+
+### Data Preperation
+This phase covers all steps needed to create the final dataset. 
+The first step is to extract the detected country column and find the frequency of students from each coutry:
+
+```{r creating data frame, eval=FALSE}
+# Creating a 'count'/frequency & country data frame
+list_of_countries = cse$detected_country  
+count.df = as.data.frame(table(list_of_countries))
+```
+This code is stored in the munge folder in the project directory, as it will be loaded initially by ProjectTemplate's `load.project()` function.
+
+### Modelling
+Once this dataset is created, the first cycle through the modelling phase begins with plotting a histogram of the dataset.
+
+```{r, echo=FALSE}
+# add 1st histogram
+ ggplot(data=cse, aes(x=detected_country)) + 
+  geom_bar(colour="black", fill="white")
+```
+
+After a first look at the graph, it is clear that a back-track in the phases is necessary, since the x labels (countries) are unreadable. 
+
+### Data Understanding
+Studying the data frame of countries, it is seen that there are 183 unique countries with a large portion only having 1 or 2 students.
+
+### Data Preperation
+This lead to sorting through the countries list and a decision was made to omit countries with under 100 participating students, as well as the undetected country row.
+
+```{r}
+# omitting the countries with < 100 students/frequency
+countries_over_100= count.df[which(count.df$Freq >= 100 & count.df$list_of_countries != "--"),]$list_of_countries
+```
+
+
+### Modelling
+The following histogram was produced:
+```{r, echo=FALSE}
+ggplot(subset(cse, cse$detected_country %in% countries_over_100), aes(x=detected_country)) +  
+   geom_bar(colour="black", fill="white")
+```
+
+This plot is more readable, as well as more relevant as the undetected countries bar didnt provide much useful information.
+
+### Data Preperation
+#### Running the source code with the data for different years
+There were 7 different year groups of data for the enrolments. To make the code simpler to change between the different cohorts, the munge file was edited to have an extra variable:
+
+```{r eval=FALSE}
+cohort = 1    # this is the different years of data, ranging from 1-7.
+cse = data.frame(read.table(paste('cyber-security-',cohort,'_enrolments.csv', sep=""), header=TRUE, sep=','))
+```
+
+The code was then manually changed in ascending order. Cohort 3 produced a histogram with only 3 countries with over 100 students. This caused a re-evaluation, and the CRISP-DM phase to back-track once again.
+
+### Data Understanding
+It was clear that this model had a problem with producing the final histogram as there is no lower limit to the amount of students enrolling on the course each year.
+A solution was manifested. The arbitrary and rigid number of 100 was changed to a percentage of 1%, which doesnt fully solve the problem of gaining an empty histogram some years, although it dramatically decreases the chances of it happening. 
+There is definitely more sophisticated mathematical models that can be programmed to let the histogram be consistent each year available, such as choosing the top 10 countries each year.
+
+### Modelling
+When running each cohort with the 1% condition, consistent and readable histograms are created every year.
+
+
+### Evaluation
+Here, code was organised and made more efficient by swapping for loops with functions (such as the 'while' function) as well as thought is put into how the model will hold uo in extreme circumstances of the data, loopholes in the model and ideas of improvemnts for the model.
+Making sure the model properly achieves the business objectives, in this case ....... the popularity of each conntry is easily shown by the y-axis.
+
+
+Endless evaluation of the data extraction process could be done, hovever the pipeline will have to eventually be deployed, as the model will expose its flaws best in an environment most specific to where it will be used.
+
+
+
+### Deployment
+Finally, the deployment stage was obsolete in this case as this pipeline will not be put into service, so we will never find out how the model will hold up with real time data.
+
+
+
+
+
